@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router'
-import { ArrowUpIcon, UserIcon, VideoCameraIcon } from 'phosphor-react-native'
+import { ArrowUpIcon, VideoCameraIcon } from 'phosphor-react-native'
 import { useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 
@@ -7,6 +7,7 @@ import { AppInput } from '@/src/components/AppInput'
 import { Avatar } from '@/src/components/Avatar'
 import { IconButton } from '@/src/components/IconButton'
 import { MessageBubble } from '@/src/components/MessageBubble'
+import { TypingIndicator } from '@/src/components/TypingIndicator'
 import { useChatMessages } from '@/src/hooks/useChatMessages'
 
 export default function Chat() {
@@ -32,20 +33,7 @@ export default function Chat() {
         keyExtractor={item => item.id}
         contentContainerStyle={{ padding: 16, gap: 16 }}
         renderItem={({ item }) => <MessageBubble msg={item} contactName={contactName} />}
-        ListFooterComponent={
-          isTyping ? (
-            <View className="flex-row items-center gap-2 mb-4">
-              <View className="w-6 h-6 rounded-full bg-gray-200 items-center justify-center">
-                <UserIcon size={13} color="#9ca3af" />
-              </View>
-              <View className="bg-white rounded-2xl px-4 py-3 border border-gray-100 flex-row gap-1 items-center">
-                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-              </View>
-            </View>
-          ) : null
-        }
+        ListFooterComponent={isTyping ? <TypingIndicator /> : null}
       />
 
       <View className="flex-row items-center px-4 py-3 gap-3 border-t-2 border-gray-200">
