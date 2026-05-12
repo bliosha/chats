@@ -11,7 +11,7 @@ type Props = {
 export const MessageBubble = ({ msg, contactName }: Props) => {
   if (msg.type === 'received') {
     return (
-      <>
+      <View>
         <View className="flex-row items-center gap-2 mb-1.5">
           <View className="w-6 h-6 rounded-full bg-gray-200 items-center justify-center">
             <UserIcon size={13} color="#9ca3af" />
@@ -28,7 +28,7 @@ export const MessageBubble = ({ msg, contactName }: Props) => {
         >
           <Text className="text-gray-900 text-base leading-6">{msg.text}</Text>
         </View>
-      </>
+      </View>
     )
   }
 
