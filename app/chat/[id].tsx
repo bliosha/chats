@@ -5,12 +5,11 @@ import { FlatList, Text, View } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { MessageBubble } from '@/src/components/MessageBubble'
+import { ChatMessageList } from '@/src/components/ChatMessageList'
 import { useChatMessages } from '@/src/hooks/useChatMessages'
 import { AppInput } from '@/src/ui/AppInput'
 import { Avatar } from '@/src/ui/Avatar'
 import { IconButton } from '@/src/ui/Button/IconButton'
-import { TypingIndicator } from '@/src/ui/TypingIndicator'
 
 export default function Chat() {
   const { id, name: contactName } = useLocalSearchParams<{ id: string; name: string }>()
@@ -37,15 +36,7 @@ export default function Chat() {
         </View>
       </View>
 
-      <FlatList
-        ref={flatListRef}
-        inverted
-        data={[...messages].reverse()}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{ padding: 16, gap: 16 }}
-        renderItem={({ item }) => <MessageBubble msg={item} contactName={contactName} />}
-        ListHeaderComponent={isTyping ? <TypingIndicator /> : null}
-      />
+      <ChatMessageList messages={messages} isTyping={isTyping} contactName={contactName} onRef={flatListRef} />
 
       <View className="flex-row items-center px-4 py-3 gap-3 border-t-2 border-gray-200">
         <IconButton icon={<CameraIcon size={24} color="#6b7280" />} />
