@@ -1,19 +1,19 @@
-import { Text, View } from "react-native";
-import {FC} from "react";
+import { FC } from 'react'
+import { Text, View } from 'react-native'
 
-type AvatarProps ={
-    name: string
-    online: boolean
+type AvatarProps = {
+  name: string
+  online: boolean
 }
 
-export const Avatar:FC<AvatarProps> = ({ name, online }) => {
+export const Avatar: FC<AvatarProps> = ({ name, online }) => {
   const initials =
     name
-      .split(" ")
+      .split(' ')
       .slice(1)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase() || name[0];
+      .map(w => w[0])
+      .join('')
+      .toUpperCase() || name[0]
 
   return (
     <View className="relative">
@@ -24,5 +24,5 @@ export const Avatar:FC<AvatarProps> = ({ name, online }) => {
         <View className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-white" />
       )}
     </View>
-  );
-};
+  )
+}
