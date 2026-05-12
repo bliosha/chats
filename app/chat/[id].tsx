@@ -1,0 +1,65 @@
+import { useLocalSearchParams } from 'expo-router'
+import { ArrowUpIcon, UserIcon, VideoCameraIcon } from 'phosphor-react-native'
+import { useState } from 'react'
+import { FlatList, Text, View } from 'react-native'
+
+import { AppInput } from '@/src/components/AppInput'
+import { Avatar } from '@/src/components/Avatar'
+import { IconButton } from '@/src/components/IconButton'
+import { MessageBubble } from '@/src/components/MessageBubble'
+import { useChatMessages } from '@/src/hooks/useChatMessages'
+
+export default function Chat() {
+  const { id, name: contactName } = useLocalSearchParams<{ id: string; name: string }>()
+  const { messages, isTyping, sendMessage } = useChatMessages(id)
+  const [inputText, setInputText] = useState('')
+
+  const handleSend = () => {
+    sendMessage(inputText)
+    setInputText('')
+  }
+
+  return (
+    <View className="flex-1">
+      <View className="items-center pb-4 border-b-2 border-blue-500">
+        <Avatar name={contactName} />
+        <Text className="text-xl font-bold text-gray-900">{contactName}</Text>
+        <Text className="text-sm text-gray-400 mt-0.5">Typically replies within 2 hours</Text>
+      </View>
+
+      <FlatList
+        data={messages}
+        keyExtractor={item => item.id}
+        contentContainerStyle={{ padding: 16, gap: 16 }}
+        renderItem={({ item }) => <MessageBubble msg={item} contactName={contactName} />}
+        ListFooterComponent={
+          isTyping ? (
+            <View className="flex-row items-center gap-2 mb-4">
+              <View className="w-6 h-6 rounded-full bg-gray-200 items-center justify-center">
+                <UserIcon size={13} color="#9ca3af" />
+              </View>
+              <View className="bg-white rounded-2xl px-4 py-3 border border-gray-100 flex-row gap-1 items-center">
+                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                <View className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+              </View>
+            </View>
+          ) : null
+        }
+      />
+
+      <View className="flex-row items-center px-4 py-3 gap-3 border-t-2 border-gray-200">
+        <IconButton icon={<VideoCameraIcon size={24} color="#6b7280" />} />
+        <AppInput
+          placeholder="Message your coach..."
+          value={inputText}
+          onChangeText={setInputText}
+          onSubmitEditing={handleSend}
+          returnKeyType="send"
+        />
+
+        <IconButton variant="dark" onPress={handleSend} icon={<ArrowUpIcon size={20} color="white" />} />
+      </View>
+    </View>
+  )
+}

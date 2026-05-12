@@ -3,7 +3,7 @@ import { Text, View } from 'react-native'
 
 type AvatarProps = {
   name: string
-  online: boolean
+  online?: boolean
 }
 
 export const Avatar: FC<AvatarProps> = ({ name, online }) => {

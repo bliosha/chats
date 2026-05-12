@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 import { Avatar } from './Avatar'
@@ -12,8 +13,14 @@ type Contact = {
 }
 
 export const ContactRow = ({ item }: { item: Contact }) => {
+  const router = useRouter()
+
   return (
-    <TouchableOpacity activeOpacity={0.7} className="flex-row items-center px-4 py-3 gap-3">
+    <TouchableOpacity
+      activeOpacity={0.7}
+      className="flex-row items-center px-4 py-3 gap-3"
+      onPress={() => router.push({ pathname: '/chat/[id]', params: { id: item.id, name: item.name } })}
+    >
       <Avatar name={item.name} online={item.online} />
       <View className="flex-1 border-b border-gray-100 pb-3">
         <View className="flex-row justify-between items-center mb-0.5">

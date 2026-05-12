@@ -7,9 +7,10 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-        <Stack>
+        <Stack screenOptions={{ contentStyle: { backgroundColor: 'white' } }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="contacts" options={{ headerShown: false }} />
+          <Stack.Screen name="chat/[id]" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>
     </SafeAreaProvider>
