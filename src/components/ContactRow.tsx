@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { Text, TouchableOpacity, View } from 'react-native'
 
-import { Avatar } from './Avatar'
+import { Avatar } from '../ui/Avatar'
 
 type Contact = {
   id: string
