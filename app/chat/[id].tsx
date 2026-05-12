@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ArrowLeftIcon, ArrowUpIcon, CameraIcon } from 'phosphor-react-native'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -18,10 +18,12 @@ export default function Chat() {
   const [inputText, setInputText] = useState('')
   const { top } = useSafeAreaInsets()
   const router = useRouter()
+  const flatListRef = useRef<FlatList>(null)
 
   const handleSend = () => {
     sendMessage(inputText)
     setInputText('')
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
   }
 
   return (
@@ -36,6 +38,7 @@ export default function Chat() {
       </View>
 
       <FlatList
+        ref={flatListRef}
         inverted
         data={[...messages].reverse()}
         keyExtractor={item => item.id}
