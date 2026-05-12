@@ -23,7 +23,7 @@ export const MessageBubble = ({ msg, contactName }: Props) => {
           </Text>
         </View>
         <View
-          className="bg-white rounded-2xl px-4 py-2 max-w-[78%] border border-gray-100"
+          className="self-start bg-white rounded-2xl px-4 py-2 max-w-[78%] border border-gray-100"
           style={{ shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, shadowOffset: { width: 0, height: 1 } }}
         >
           <Text className="text-gray-900 text-base leading-6">{msg.text}</Text>
