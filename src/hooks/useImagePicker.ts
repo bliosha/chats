@@ -14,14 +14,10 @@ export const useImagePicker = () => {
     }
 
     if (!granted) {
-      Alert.alert(
-        'Photo access required',
-        'Allow access to your photos in Settings to send images.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Open Settings', onPress: () => Linking.openSettings() },
-        ],
-      )
+      Alert.alert('Photo access required', 'Allow access to your photos in Settings to send images.', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+      ])
       return null
     }
 
