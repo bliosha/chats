@@ -9,7 +9,8 @@ export type ReceivedMessage = MessageBase & {
 
 export type SentMessage = MessageBase & {
   type: 'sent'
-  text: string
+  text?: string
+  imageUri?: string
 }
 
 export type EventMessage = MessageBase & {
@@ -140,18 +141,7 @@ export const useChatMessages = (contactId: string) => {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const sendMessage = useCallback((text: string) => {
-    if (!text.trim()) return
-
-    const sent: SentMessage = {
-      id: Date.now().toString(),
-      type: 'sent',
-      text: text.trim(),
-      time: getTime(),
-    }
-
-    setMessages(prev => [...prev, sent])
-
+  const scheduleReply = useCallback(() => {
     if (timerRef.current) return
 
     setIsTyping(true)
@@ -172,6 +162,25 @@ export const useChatMessages = (contactId: string) => {
       timerRef.current = null
     }, 5000)
   }, [])
+
+  const sendMessage = useCallback(
+    (text: string, imageUri?: string) => {
+      const trimmed = text.trim()
+      if (!trimmed && !imageUri) return
+
+      const sent: SentMessage = {
+        id: Date.now().toString(),
+        type: 'sent',
+        text: trimmed || undefined,
+        imageUri,
+        time: getTime(),
+      }
+
+      setMessages(prev => [...prev, sent])
+      scheduleReply()
+    },
+    [scheduleReply],
+  )
 
   return {
     messages,

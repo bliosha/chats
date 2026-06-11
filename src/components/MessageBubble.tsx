@@ -1,7 +1,13 @@
+import { Image } from 'expo-image'
 import { CheckIcon, UserIcon } from 'phosphor-react-native'
-import { Text, View } from 'react-native'
+import { useState } from 'react'
+import { Text, View, useWindowDimensions } from 'react-native'
 
 import { type Message } from '@/src/hooks/useChatMessages'
+import { cn } from '@/src/utils/cn'
+
+const LIST_PADDING = 16
+const MAX_BUBBLE_RATIO = 0.78
 
 type Props = {
   msg: Message
@@ -34,10 +40,22 @@ export const MessageBubble = ({ msg, contactName }: Props) => {
 
   if (msg.type === 'sent') {
     return (
-      <View className="items-end">
-        <Text className="text-xs text-gray-400 mb-1.5">{msg.time}</Text>
-        <View className="bg-gray-900 rounded-2xl px-4 py-2 max-w-[78%]">
-          <Text className="text-white text-base leading-6">{msg.text}</Text>
+      <View className="items-end gap-1.5">
+        <Text className="text-xs text-gray-400">{msg.time}</Text>
+
+        <View
+          className={cn(
+            'bg-gray-900 rounded-2xl px-4 py-2 max-w-[78%] overflow-hidden',
+            {
+              'px-0 pt-0': msg.imageUri,
+            },
+            { 'pb-0': !msg.text },
+          )}
+        >
+          {msg.imageUri && <MessageImage uri={msg.imageUri} />}
+          {msg.text && (
+            <Text className={cn('text-white text-base leading-6', { 'px-4 pt-2': msg.imageUri })}>{msg.text}</Text>
+          )}
         </View>
       </View>
     )
@@ -53,5 +71,21 @@ export const MessageBubble = ({ msg, contactName }: Props) => {
         <Text className="text-gray-500 text-sm">{msg.subtitle}</Text>
       </View>
     </View>
+  )
+}
+
+const MessageImage = ({ uri }: { uri: string }) => {
+  const { width } = useWindowDimensions()
+  const [aspectRatio, setAspectRatio] = useState(1)
+
+  const imageWidth = (width - LIST_PADDING * 2) * MAX_BUBBLE_RATIO
+
+  return (
+    <Image
+      source={{ uri }}
+      contentFit="cover"
+      onLoad={({ source }) => setAspectRatio(source.width / source.height)}
+      style={{ width: imageWidth, aspectRatio, backgroundColor: '#f3f4f6' }}
+    />
   )
 }
